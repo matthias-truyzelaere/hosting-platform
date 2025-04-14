@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "app/generated/prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  created_time      DateTime @default(now())
+  email             String   @unique
+  first_name        String?
+  last_name         String?
+  profile_image_url String
+  user_id           String   @unique
+}
+
+model Package {
+  id              Int      @id @default(autoincrement())
+  created_time    DateTime @default(now())
+  package_name    String
+  domain          String
+  email           String
+  username        String   @unique
+  status          String
+  subscription_id String
+  user_id         String
+}
+
+model Subscription {
+  id              Int      @id @default(autoincrement())
+  created_time    DateTime @default(now())
+  subscription_id String
+  stripe_user_id  String
+  status          String
+  start_date      String
+  product_id      String
+  user_id         String
+}
+
+model Invoice {
+  id                 Int      @id @default(autoincrement())
+  created_time       DateTime @default(now())
+  invoice_id         String
+  invoice_pdf        String
+  hosted_invoice_url String
+  amount_paid        String
+  amount_due         String?
+  currency           String
+  status             String
+  email              String
+  subscription_id    String
+  user_id            String
+}
